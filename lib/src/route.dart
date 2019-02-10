@@ -26,7 +26,7 @@ class _NavigationState extends State<Navigation> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: _widgetOptions.elementAt(_selectedIndex),
+      body: Items(),
       // TODO: this should be dynamic ?
       bottomNavigationBar: BottomNavigation(
         selectedIndex: _selectedIndex,
