@@ -1,4 +1,4 @@
-# Flutter Warehouse Ap
+# Flutter Warehouse App
 
 A test application written win dart language.
 
