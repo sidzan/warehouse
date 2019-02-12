@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
-
+import 'package:flutter/services.dart';
+import 'package:flutter_nfc_reader/flutter_nfc_reader.dart';
 //Import Custom Functions below
 import './Items.dart';
 
@@ -21,6 +22,7 @@ class ItemState extends State<Items> {
   String filter;
   var filteredData;
   Timer _debounce;
+  NfcData _nfcData;
 
   var _loading = true;
   var data;
@@ -86,6 +88,18 @@ class ItemState extends State<Items> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
+        appBar: AppBar(
+          title: Text(""),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.nfc),
+              onPressed: () {
+                //_select(choices[0]);
+                startNFC();
+              },
+            ),
+          ],
+        ),
         resizeToAvoidBottomPadding: false,
         body: Column(
           children: <Widget>[
@@ -117,6 +131,51 @@ class ItemState extends State<Items> {
             ),
           ],
         ));
+  }
+
+  Future<void> startNFC() async {
+    NfcData response;
+
+    setState(() {
+      _nfcData = NfcData();
+      _nfcData.status = NFCStatus.reading;
+    });
+
+    print('NFC: Scan started');
+
+    try {
+      print('NFC: Scan readed NFC tag');
+      response = await FlutterNfcReader.read;
+    } on PlatformException {
+      print('NFC: Scan stopped exception');
+    }
+    setState(() {
+      _nfcData = response;
+      final snackBar = SnackBar(content: Text(response.content.toString()));
+      Scaffold.of(context).showSnackBar(snackBar);
+    });
+  }
+
+  Future<void> stopNFC() async {
+    NfcData response;
+
+    try {
+      print('NFC: Stop scan by user');
+      response = await FlutterNfcReader.stop;
+    } on PlatformException {
+      print('NFC: Stop scan exception');
+      response = NfcData(
+        id: '',
+        content: '',
+        error: 'NFC scan stop exception',
+        statusMapper: '',
+      );
+      response.status = NFCStatus.error;
+    }
+
+    setState(() {
+      _nfcData = response;
+    });
   }
 }
 /*

@@ -21,7 +21,10 @@ dependencies:
   cupertino_icons: ^0.1.2
   http: "^0.12.0+1"
   cached_network_image: "^0.5.1"
-
+  flutter_nfc_reader:
+    git:
+      url: git://github.com/matteocrippa/flutter-nfc-reader.git
+      ref: master
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -42,7 +45,7 @@ flutter:
     fonts:
     - asset: fonts/Nunito-Regular.ttf
     - asset: fonts/Nunito-Bold.ttf
-    - asset: fonts/Nunito-Black.ttfA
+    - asset: fonts/Nunito-Black.ttf
   # To add assets to your application, add an assets section, like this:
   # assets:
   #  - images/a_dot_burr.jpeg
